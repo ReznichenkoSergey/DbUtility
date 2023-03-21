@@ -91,6 +91,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbIndexes
                                                             INNER JOIN sys.tables TABLE_DATA ON TABLE_DATA.object_id = INDEX_DATA.object_id
                                                             INNER JOIN sys.schemas SCHEMA_DATA ON SCHEMA_DATA.schema_id = TABLE_DATA.schema_id	                                                
                                                             WHERE TABLE_DATA.is_ms_shipped = 0
+                                                            AND INDEX_DATA.is_hypothetical = 0
                                                             AND INDEX_DATA.type_desc IN ('NONCLUSTERED', 'CLUSTERED')
                                                     )
                                                     SELECT
