@@ -13,6 +13,7 @@ using System.Data;
 using System.Data.SqlClient;
 using DbAnalyzer.Core.Models.ReportModels.Interfaces;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DbUtilityConsole
 {
@@ -38,43 +39,49 @@ namespace DbUtilityConsole
 
             InitMessages();
 
-            var fileName = string.Empty;
+            var fileName = string.Empty;            
             var key = Console.ReadLine();
+
             if(int.TryParse(key, out var index))
             {
-                var value = (QueryTypeEnum)index;
-
-                GeneratingMessages();
-
-                var file = new FileCreator();
-                IList<IReportItem> result = null;
-                switch (value)
+                if (ReportInfo.ContainsKey(index))
                 {
-                    case QueryTypeEnum.ProceduresOptimization:
-                        result = await proceduresUsageReport.GetReportAsync();
-                        break;
-                    case QueryTypeEnum.IndexesDublicatesOptimization:
-                        result = await dbIndexReports.GetDublicateIndexesReportAsync();
-                        break;
-                    case QueryTypeEnum.IndexesUnusedOptimization:
-                        result = await dbIndexReports.GetUnusedIndexesReportAsync();
-                        break;
-                    case QueryTypeEnum.ExpensiveQueriesOptimization:
-                        result = await expensiveQueriesReport.GetReportAsync(ExpensiveQueryOrderingEnum.LongRunningQuery, 50);
-                        break;
-                    case QueryTypeEnum.IndexesUsageProceduresStatistic:
-                        var statistics1 = await dbIndexReports.GetNonclusterIndexesUsageByProceduresStatisticsAsync();
-                        fileName = file.SaveStatistics(Directory.GetCurrentDirectory(), statistics1);
-                        break;
-                    case QueryTypeEnum.IndexesUsageStatistic:
-                        var statistics2 = await dbIndexReports.GetNonclusterIndexesUsageStatisticsAsync();
-                        fileName = file.SaveStatistics(Directory.GetCurrentDirectory(), statistics2);
-                        break;
+                    var value = (QueryTypeEnum)index;
+
+                    GeneratingMessages();
+
+                    var file = new FileCreator();
+                    IList<IReportItem> result = null;
+                    switch (value)
+                    {
+                        case QueryTypeEnum.ProceduresOptimization:
+                            result = await proceduresUsageReport.GetReportAsync();
+                            break;
+                        case QueryTypeEnum.IndexesDublicatesOptimization:
+                            result = await dbIndexReports.GetDublicateIndexesReportAsync();
+                            break;
+                        case QueryTypeEnum.IndexesUnusedOptimization:
+                            result = await dbIndexReports.GetUnusedIndexesReportAsync();
+                            break;
+                        case QueryTypeEnum.ExpensiveQueriesOptimization:
+                            result = await expensiveQueriesReport.GetReportAsync(ExpensiveQueryOrderingEnum.LongRunningQuery, 50);
+                            break;
+                        case QueryTypeEnum.IndexesUsageProceduresStatistic:
+                            var statistics1 = await dbIndexReports.GetNonclusterIndexesUsageByProceduresStatisticsAsync();
+                            fileName = file.SaveStatistics(Directory.GetCurrentDirectory(), statistics1);
+                            break;
+                        case QueryTypeEnum.IndexesUsageStatistic:
+                            var statistics2 = await dbIndexReports.GetNonclusterIndexesUsageStatisticsAsync();
+                            fileName = file.SaveStatistics(Directory.GetCurrentDirectory(), statistics2);
+                            break;
+                    }
+                    if (result != null)
+                    {
+                        fileName = file.SaveReport(Directory.GetCurrentDirectory(), result);
+                    }
                 }
-                if (result!= null)
-                {
-                    fileName = file.SaveReport(Directory.GetCurrentDirectory(), result);
-                }
+                else
+                    Console.WriteLine("Not supported number!");
             }
 
             DoneMessages(fileName);
@@ -84,12 +91,10 @@ namespace DbUtilityConsole
         {
             Console.WriteLine("Select report number to generate a report:");
             Console.WriteLine();
-            Console.WriteLine("1. Procedures Optimization");
-            Console.WriteLine("2. Indexes Dublicates Optimization");
-            Console.WriteLine("3. Indexes Unused Optimization");
-            Console.WriteLine("4. Expensive Queries Optimization");
-            Console.WriteLine("5. Indexes Usage Procedures Statistic");
-            Console.WriteLine("6. Indexes Usage Statistic");
+            foreach(var item in ReportInfo)
+            {
+                Console.WriteLine($"   {item.Key}. {item.Value}");
+            }
             Console.WriteLine();
             Console.WriteLine("Selected number:");
             Console.WriteLine();
@@ -118,7 +123,17 @@ namespace DbUtilityConsole
             Console.WriteLine("Done!");
         }
 
-        private enum QueryTypeEnum
+        private static Dictionary<int, string> ReportInfo => new Dictionary<int, string>()
+        {
+            { (int)QueryTypeEnum.ProceduresOptimization, "Procedures Optimization" },
+            { (int)QueryTypeEnum.IndexesDublicatesOptimization, "Indexes Dublicates Optimization" },
+            { (int)QueryTypeEnum.IndexesUnusedOptimization, "Indexes Unused Optimization" },
+            { (int)QueryTypeEnum.ExpensiveQueriesOptimization, "Expensive Queries Optimization" },
+            { (int)QueryTypeEnum.IndexesUsageProceduresStatistic, "Indexes Usage Procedures Statistic" },
+            { (int)QueryTypeEnum.IndexesUsageStatistic, "Indexes Usage Statistic" }
+        };
+
+        public enum QueryTypeEnum
         {
             ProceduresOptimization = 1,
             IndexesDublicatesOptimization,
@@ -127,6 +142,5 @@ namespace DbUtilityConsole
             IndexesUsageProceduresStatistic,
             IndexesUsageStatistic
         }
-
     }
 }

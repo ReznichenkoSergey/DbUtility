@@ -52,8 +52,8 @@ namespace DbUtilityConsole.Models
             }
 
             return fileType == FileType.Sql 
-                ? $"{folderName}//Report_{DateTime.Now:yyyyMMdd}_{Guid.NewGuid()}.sql"
-                : $"{folderName}//Statistic_{DateTime.Now:yyyyMMdd}_{Guid.NewGuid()}.json";
+                ? $"{folderName}\\Report_{DateTime.Now:yyyyMMdd}_{Guid.NewGuid()}.sql"
+                : $"{folderName}\\Statistic_{DateTime.Now:yyyyMMdd}_{Guid.NewGuid()}.json";
         }
 
         private enum FileType
