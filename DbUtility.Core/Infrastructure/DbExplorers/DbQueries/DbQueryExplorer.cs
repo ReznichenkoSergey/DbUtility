@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Resources = DbUtility.Core.Properties.Resources;
 
 namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbQueries
 {
@@ -13,23 +14,6 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbQueries
     {
         readonly ILogger<DbQueryExplorer> _logger;
         private readonly IDbConnection _con;
-        private readonly string ExpensiveQueryPattern = @"SELECT TOP({0}) qs.execution_count [ExecutionCount],
-                                                            (qs.total_logical_reads)*8/1024.0 [TotalLogicalReads],
-                                                            (qs.total_logical_reads/qs.execution_count)*8/1024.0 AS [AvgLogicalReads],
-                                                            (qs.total_worker_time)/1000.0 [TotalWorkerTime],
-                                                            (qs.total_worker_time/qs.execution_count)/1000.0 [AvgWorkerTime],
-                                                            (qs.total_elapsed_time)/1000.0 [TotalElapsedTime],
-                                                            (qs.total_elapsed_time/qs.execution_count)/1000.0 AS [AvgElapsedTime],
-                                                            qs.creation_time AS [CreationTime],
-                                                            t.text AS [CompleteQueryText] 
-                                                            {2}
-                                                        FROM sys.dm_exec_query_stats qs WITH (NOLOCK)
-                                                        CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t
-                                                        {3}
-                                                        WHERE t.dbid = DB_ID()
-                                                        ORDER BY {1}";
-
-
         public DbQueryExplorer(ILogger<DbQueryExplorer> logger, IDbConnection con)
         {
             _logger = logger;
@@ -44,7 +28,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbQueries
         {
             try
             {
-                return await _con.QueryAsync<ExpensiveQueryStatistics>(string.Format(ExpensiveQueryPattern,
+                return await _con.QueryAsync<ExpensiveQueryStatistics>(string.Format(Resources.ExpensiveQueryPattern,
                     topAmount <= 0 ? 50 : topAmount, 
                     MapOrdering(ordering),
                     includeExecutionPlan ? ", qp.query_plan AS [QueryPlan]" : string.Empty,

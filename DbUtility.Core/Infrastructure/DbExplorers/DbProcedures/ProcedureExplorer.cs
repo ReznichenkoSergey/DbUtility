@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Resources = DbUtility.Core.Properties.Resources;
 
 namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbProcedures
 {
@@ -15,23 +16,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbProcedures
     {
         readonly ILogger<IndexExplorer> _logger;
         private readonly string _connectionString;
-        readonly private string ProcStatExecutionCounterQuery = @"select 
-	                                                                '[' + sc.name + '].[' + obj.name + ']' ProcedureName,
-                                                                    proc_stats.last_execution_time LastExecTime,
-                                                                    obj.modify_date ModifyDate,
-                                                                    obj.create_date CreateDate,
-                                                                    proc_stats.execution_count ExecCount
-                                                                from sys.dm_exec_procedure_stats proc_stats
-                                                                inner join sys.objects obj
-                                                                    on obj.object_id = proc_stats.object_id
-                                                                inner join sys.schemas sc
-                                                                    on obj.schema_id = sc.schema_id
-                                                                where obj.type = 'P' and db_name(proc_stats.database_id) = @Database";
-
-        readonly private string GetProcedureNamesQuery = @"SELECT '[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + ']' [ProcedureName]
-                                                            FROM INFORMATION_SCHEMA.ROUTINES
-                                                            WHERE ROUTINE_TYPE = 'PROCEDURE'";
-
+        
         public ProcedureExplorer(ILogger<IndexExplorer> logger,
             IDbConnection con)
         {
@@ -44,7 +29,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbProcedures
             try
             {
                 var con = new SqlConnection(_connectionString);
-                return await con.QueryAsync<string>(GetProcedureNamesQuery);
+                return await con.QueryAsync<string>(Resources.GetProcedureNamesQuery);
             }
             catch (Exception ex)
             {
@@ -85,7 +70,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbProcedures
             try
             {
                 using var con = new SqlConnection(_connectionString);
-                return await con.QueryAsync<ProcedureExecStatistic>(ProcStatExecutionCounterQuery, new { con.Database });
+                return await con.QueryAsync<ProcedureExecStatistic>(Resources.ProcStatExecutionCounterQuery, new { con.Database });
             }
             catch (Exception ex)
             {

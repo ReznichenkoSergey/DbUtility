@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="DublicateIndexesQuery" xml:space="preserve">
+    <value>;WITH CTE_INDEX_DATA AS (
+                                                            SELECT
+                                                                    SCHEMA_DATA.name AS schema_name,
+                                                                    TABLE_DATA.name AS table_name,
+                                                                    INDEX_DATA.name AS index_name,
+                                                                    STUFF((SELECT  ', ' + COLUMN_DATA_KEY_COLS.name + ' ' + CASE WHEN INDEX_COLUMN_DATA_KEY_COLS.is_descending_key = 1 THEN 'DESC' ELSE 'ASC' END -- Include column order (ASC / DESC)
+                                                                                        FROM    sys.tables AS T
+                                                                                                    INNER JOIN sys.indexes INDEX_DATA_KEY_COLS
+                                                                                                    ON T.object_id = INDEX_DATA_KEY_COLS.object_id
+                                                                                                    INNER JOIN sys.index_columns INDEX_COLUMN_DATA_KEY_COLS
+                                                                                                    ON INDEX_DATA_KEY_COLS.object_id = INDEX_COLUMN_DATA_KEY_COLS.object_id
+                                                                                                    AND INDEX_DATA_KEY_COLS.index_id = INDEX_COLUMN_DATA_KEY_COLS.index_id
+                                                                                                    INNER JOIN sys.columns COLUMN_DATA_KEY_COLS
+                                                                                                    ON T.object_id = COLUMN_DATA_KEY_COLS.object_id
+                                                                                                    AND INDEX_COLUMN_DATA_KEY_COLS.column_id = COLUMN_DATA_KEY_COLS.column_id
+                                                                                        WHERE   INDEX_DATA.object_id = INDEX_DATA_KEY_COLS.object_id
+                                                                                                    AND INDEX_DATA.index_id = INDEX_DATA_KEY_COLS.index_id
+                                                                                                    AND INDEX_COLUMN_DATA_KEY_COLS.is_included_column = 0
+                                                                                                    AND INDEX_DATA.is_hypothetical = 0
+                                                                                        ORDER BY INDEX_COLUMN_DATA_KEY_COLS.key_ordinal
+                                                                                        FOR XML PATH('')), 1, 2, '') AS key_column_list ,
+                                                                STUFF(( SELECT  ', ' + COLUMN_DATA_INC_COLS.name
+                                                                                        FROM    sys.tables AS T
+                                                                                                    INNER JOIN sys.indexes INDEX_DATA_INC_COLS
+                                                                                                    ON T.object_id = INDEX_DATA_INC_COLS.object_id
+                                                                                                    INNER JOIN sys.index_columns INDEX_COLUMN_DATA_INC_COLS
+                                                                                                    ON INDEX_DATA_INC_COLS.object_id = INDEX_COLUMN_DATA_INC_COLS.object_id
+                                                                                                    AND INDEX_DATA_INC_COLS.index_id = INDEX_COLUMN_DATA_INC_COLS.index_id
+                                                                                                    INNER JOIN sys.columns COLUMN_DATA_INC_COLS
+                                                                                                    ON T.object_id = COLUMN_DATA_INC_COLS.object_id
+                                                                                                    AND INDEX_COLUMN_DATA_INC_COLS.column_id = COLUMN_DATA_INC_COLS.column_id
+                                                                                        WHERE   INDEX_DATA.object_id = INDEX_DATA_INC_COLS.object_id
+                                                                                                    AND INDEX_DATA.index_id = INDEX_DATA_INC_COLS.index_id
+                                                                                                    AND INDEX_COLUMN_DATA_INC_COLS.is_included_column = 1
+                                                                                                    AND INDEX_DATA.is_hypothetical = 0
+                                                                                        ORDER BY INDEX_COLUMN_DATA_INC_COLS.key_ordinal
+                                                                                        FOR XML PATH('')), 1, 2, '') AS include_column_list,
+                                                            INDEX_DATA.is_disabled -- Check if index is disabled before determining which dupe to drop (if applicable)
+                                                            FROM sys.indexes INDEX_DATA
+                                                            INNER JOIN sys.tables TABLE_DATA ON TABLE_DATA.object_id = INDEX_DATA.object_id
+                                                            INNER JOIN sys.schemas SCHEMA_DATA ON SCHEMA_DATA.schema_id = TABLE_DATA.schema_id	                                                
+                                                            WHERE TABLE_DATA.is_ms_shipped = 0
+                                                            AND INDEX_DATA.is_hypothetical = 0
+                                                            AND INDEX_DATA.type_desc IN ('NONCLUSTERED', 'CLUSTERED')
+                                                    )
+                                                    SELECT
+	                                                    '[' + schema_name + '].[' + table_name + ']' TableName,
+	                                                    '[' + schema_name + '].[' + index_name + ']' IndexName,
+	                                                    ISNULL(key_column_list,'') KeyColumnList,
+	                                                    ISNULL(include_column_list,'') IncludeColumnList
+                                                    FROM CTE_INDEX_DATA DUPE1
+                                                    WHERE EXISTS
+                                                    (SELECT * FROM CTE_INDEX_DATA DUPE2
+                                                        WHERE DUPE1.schema_name = DUPE2.schema_name
+                                                        AND DUPE1.table_name = DUPE2.table_name
+                                                        AND DUPE1.key_column_list = DUPE2.key_column_list
+                                                        AND ISNULL(DUPE1.include_column_list, '') = ISNULL(DUPE2.include_column_list, '')
+                                                        AND DUPE1.index_name &lt;&gt; DUPE2.index_name)
+                                                        GROUP BY '[' + schema_name + '].[' + table_name + ']',
+	                                                    '[' + schema_name + '].[' + index_name + ']',
+	                                                    key_column_list,
+	                                                    include_column_list</value>
+  </data>
+  <data name="ExpensiveQueryPattern" xml:space="preserve">
+    <value>SELECT TOP({0}) qs.execution_count [ExecutionCount],
+                                                            (qs.total_logical_reads)*8/1024.0 [TotalLogicalReads],
+                                                            (qs.total_logical_reads/qs.execution_count)*8/1024.0 AS [AvgLogicalReads],
+                                                            (qs.total_worker_time)/1000.0 [TotalWorkerTime],
+                                                            (qs.total_worker_time/qs.execution_count)/1000.0 [AvgWorkerTime],
+                                                            (qs.total_elapsed_time)/1000.0 [TotalElapsedTime],
+                                                            (qs.total_elapsed_time/qs.execution_count)/1000.0 AS [AvgElapsedTime],
+                                                            qs.creation_time AS [CreationTime],
+                                                            t.text AS [CompleteQueryText] 
+                                                            {2}
+                                                        FROM sys.dm_exec_query_stats qs WITH (NOLOCK)
+                                                        CROSS APPLY sys.dm_exec_sql_text(plan_handle) AS t
+                                                        {3}
+                                                        WHERE t.dbid = DB_ID()
+                                                        ORDER BY {1}</value>
+  </data>
+  <data name="GetProcedureNamesQuery" xml:space="preserve">
+    <value>SELECT '[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + ']' [ProcedureName]
+                                                            FROM INFORMATION_SCHEMA.ROUTINES
+                                                            WHERE ROUTINE_TYPE = 'PROCEDURE'</value>
+  </data>
+  <data name="ProcStatExecutionCounterQuery" xml:space="preserve">
+    <value>select 
+	                                                                '[' + sc.name + '].[' + obj.name + ']' ProcedureName,
+                                                                    proc_stats.last_execution_time LastExecTime,
+                                                                    obj.modify_date ModifyDate,
+                                                                    obj.create_date CreateDate,
+                                                                    proc_stats.execution_count ExecCount
+                                                                from sys.dm_exec_procedure_stats proc_stats
+                                                                inner join sys.objects obj
+                                                                    on obj.object_id = proc_stats.object_id
+                                                                inner join sys.schemas sc
+                                                                    on obj.schema_id = sc.schema_id
+                                                                where obj.type = 'P' and db_name(proc_stats.database_id) = @Database</value>
+  </data>
+  <data name="UnusedIndexQuery" xml:space="preserve">
+    <value>SELECT 
+                                        '[' + s.name + '].[' + o.name + ']' TableName,
+	                                    '[' + s.name + '].[' + i.name + ']' IndexName,
+	                                    dm_ius.user_seeks UserSeek,
+	                                    dm_ius.user_scans UserScans,
+	                                    dm_ius.user_lookups UserLookups,
+	                                    dm_ius.user_updates AS UserUpdates,
+	                                    p.TableRows,
+	                                    SUM(sz.[used_page_count]) * 8 IndexSize
+                                    FROM sys.dm_db_index_usage_stats dm_ius
+                                    INNER JOIN sys.indexes i ON i.index_id = dm_ius.index_id
+	                                    AND dm_ius.OBJECT_ID = i.OBJECT_ID
+                                    INNER JOIN sys.objects o ON dm_ius.OBJECT_ID = o.OBJECT_ID
+                                    INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+                                    INNER JOIN sys.dm_db_partition_stats sz ON sz.object_id = o.OBJECT_ID
+                                    INNER JOIN (
+	                                    SELECT SUM(p.rows) TableRows,
+		                                    p.index_id,
+		                                    p.OBJECT_ID
+	                                    FROM sys.partitions p
+	                                    GROUP BY p.index_id,
+		                                    p.OBJECT_ID
+	                                    ) p ON p.index_id = dm_ius.index_id
+	                                    AND dm_ius.OBJECT_ID = p.OBJECT_ID
+                                    WHERE OBJECTPROPERTY(dm_ius.OBJECT_ID, 'IsUserTable') = 1
+	                                    AND dm_ius.database_id = DB_ID()
+	                                    AND i.type_desc = 'nonclustered'
+	                                    AND i.is_primary_key = 0
+	                                    AND i.is_unique_constraint = 0
+                                    GROUP BY s.name,
+										'[' + s.name + '].[' + o.name + ']',
+										'[' + s.name + '].[' + i.name + ']' ,
+	                                    dm_ius.user_seeks,
+	                                    dm_ius.user_scans,
+	                                    dm_ius.user_lookups,
+	                                    dm_ius.user_updates,
+	                                    p.TableRows
+                                    ORDER BY (dm_ius.user_seeks + dm_ius.user_scans + dm_ius.user_lookups) ASC</value>
+  </data>
+</root>
