@@ -32,7 +32,10 @@ namespace DbAnalyzer.Core.Models.Parsers
         public IList<string> GetMissingStatistics(string execPlanContent)
         {
             var items = new List<string>();
-            var start = execPlanContent.IndexOf(statStartValue);
+            if (string.IsNullOrEmpty(execPlanContent))
+                return items;
+
+                var start = execPlanContent.IndexOf(statStartValue);
             if (start > -1)
             {
                 var scriptGenerator = new DbScriptGenerator();
@@ -48,6 +51,9 @@ namespace DbAnalyzer.Core.Models.Parsers
         public IList<MissingIndex> GetMissingIndexes(string execPlanContent)
         {
             var items = new List<MissingIndex>();
+            if (string.IsNullOrEmpty(execPlanContent))
+                return items;
+
             var start = execPlanContent.IndexOf(indexStartValue);
             if (start > -1)
             {
@@ -73,6 +79,7 @@ namespace DbAnalyzer.Core.Models.Parsers
                     TableName = $"{x.Attribute("Schema").Value}.{x.Attribute("Table").Value}",
                     IndexName = $"{x.Attribute("Schema").Value}.{x.Attribute("Index").Value}"
                 })
+                .Distinct()
                 .ToList();
         }
 

@@ -51,7 +51,7 @@ namespace DbAnalyzer.Core.Infrastructure.Reports.DbIndexes
                             {
                                 ReportItemStatus = ReportItemStatus.Warning,
                                 Annotation = x.GetAnnotation(),
-                                Query = dbScriptGenerator.GetDropIndexScript(x.IndexName, x.TableName)
+                                Query = dbScriptGenerator.GetDropIndexScript(x.IndexName)
                             });
                         });
                 }

@@ -33,9 +33,9 @@ namespace DbAnalyzer.Core.Models.Helpers
             return bld.ToString();
         }
 
-        public string GetDropIndexScript(DbIndex dbIndex) => $"DROP INDEX {dbIndex.IndexName} ON {dbIndex.TableName}";
+        public string GetDropIndexScript(DbIndex dbIndex) => GetDropIndexScript(dbIndex.IndexName);
 
-        public string GetDropIndexScript(string indexName, string tableName) => $"DROP INDEX {indexName} ON {tableName}";
+        public string GetDropIndexScript(string indexName) => $"DROP INDEX {indexName}";
 
         public IEnumerable<string> GetCreateStatisticsScript(ColumnsWithNoStatistics columnsWithNoStatistics)
             => columnsWithNoStatistics

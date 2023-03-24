@@ -1,6 +1,5 @@
 ﻿using DbAnalyzer.Core.Models;
 using System;
-using System.Text.Json.Serialization;
 
 namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbQueries.Models
 {
@@ -71,6 +70,10 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbQueries.Models
             }
         }
 
+        public string GetAnnotation(decimal impactValue)
+            => impactValue == 0
+            ? $"CreationTime= {CreationTime}, AvgLogicalReads= {AvgLogicalReads}, AvgElapsedTime= {AvgElapsedTime}, ExecutionCount= {ExecutionCount}"
+            : $"CreationTime= {CreationTime}, Impact= {Math.Round(impactValue, 2)}%, AvgImpact= {Math.Round((double)impactValue * ExecutionCount * AvgElapsedTime / 100, 2)}, AvgLogicalReads= {AvgLogicalReads}, AvgElapsedTime= {AvgElapsedTime}, ExecutionCount= {ExecutionCount}";
     }
 
 }

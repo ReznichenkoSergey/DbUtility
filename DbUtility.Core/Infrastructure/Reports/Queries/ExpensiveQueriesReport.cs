@@ -43,7 +43,7 @@ namespace DbAnalyzer.Core.Infrastructure.Reports.Queries
                             result.Add(new ReportItem()
                             {
                                 ReportItemStatus = ReportItemStatus.Success,
-                                Annotation = $"Query: {query.CompleteQueryText}, impact: {index.Impact}%",
+                                Annotation = $"{query.GetAnnotation(index.Impact)}{Environment.NewLine}Query: {query.CompleteQueryText}",
                                 Query = index.Query
                             });
                         }

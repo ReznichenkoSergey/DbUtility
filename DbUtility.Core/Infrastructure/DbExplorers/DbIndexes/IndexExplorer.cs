@@ -69,6 +69,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbIndexes
                                                                                         WHERE   INDEX_DATA.object_id = INDEX_DATA_KEY_COLS.object_id
                                                                                                     AND INDEX_DATA.index_id = INDEX_DATA_KEY_COLS.index_id
                                                                                                     AND INDEX_COLUMN_DATA_KEY_COLS.is_included_column = 0
+                                                                                                    AND INDEX_DATA.is_hypothetical = 0
                                                                                         ORDER BY INDEX_COLUMN_DATA_KEY_COLS.key_ordinal
                                                                                         FOR XML PATH('')), 1, 2, '') AS key_column_list ,
                                                                 STUFF(( SELECT  ', ' + COLUMN_DATA_INC_COLS.name
@@ -84,6 +85,7 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbIndexes
                                                                                         WHERE   INDEX_DATA.object_id = INDEX_DATA_INC_COLS.object_id
                                                                                                     AND INDEX_DATA.index_id = INDEX_DATA_INC_COLS.index_id
                                                                                                     AND INDEX_COLUMN_DATA_INC_COLS.is_included_column = 1
+                                                                                                    AND INDEX_DATA.is_hypothetical = 0
                                                                                         ORDER BY INDEX_COLUMN_DATA_INC_COLS.key_ordinal
                                                                                         FOR XML PATH('')), 1, 2, '') AS include_column_list,
                                                             INDEX_DATA.is_disabled -- Check if index is disabled before determining which dupe to drop (if applicable)

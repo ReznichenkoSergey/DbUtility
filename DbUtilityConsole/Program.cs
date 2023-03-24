@@ -13,7 +13,6 @@ using System.Data;
 using System.Data.SqlClient;
 using DbAnalyzer.Core.Models.ReportModels.Interfaces;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace DbUtilityConsole
 {
@@ -25,7 +24,7 @@ namespace DbUtilityConsole
              .SetBasePath(Directory.GetCurrentDirectory())
              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             IConfigurationRoot configuration = builder.Build();
-            
+
             var serviceProvider = new ServiceCollection()
                     .AddCustomService()
                     .AddTransient<IDbConnection>((sp) => new SqlConnection(configuration.GetConnectionString("DefaultConnection")))
@@ -39,16 +38,16 @@ namespace DbUtilityConsole
 
             InitMessages();
 
-            var fileName = string.Empty;            
+            var fileName = string.Empty;
             var key = Console.ReadLine();
 
-            if(int.TryParse(key, out var index))
+            if (int.TryParse(key, out var index))
             {
                 if (ReportInfo.ContainsKey(index))
                 {
                     var value = (QueryTypeEnum)index;
 
-                    GeneratingMessages();
+                    GeneratingMessages(ReportInfo[index]);
 
                     var file = new FileCreator();
                     IList<IReportItem> result = null;
@@ -57,7 +56,7 @@ namespace DbUtilityConsole
                         case QueryTypeEnum.ProceduresOptimization:
                             result = await proceduresUsageReport.GetReportAsync();
                             break;
-                        case QueryTypeEnum.IndexesDublicatesOptimization:
+                        case QueryTypeEnum.IndexesDublicateOptimization:
                             result = await dbIndexReports.GetDublicateIndexesReportAsync();
                             break;
                         case QueryTypeEnum.IndexesUnusedOptimization:
@@ -91,7 +90,7 @@ namespace DbUtilityConsole
         {
             Console.WriteLine("Select report number to generate a report:");
             Console.WriteLine();
-            foreach(var item in ReportInfo)
+            foreach (var item in ReportInfo)
             {
                 Console.WriteLine($"   {item.Key}. {item.Value}");
             }
@@ -99,10 +98,10 @@ namespace DbUtilityConsole
             Console.WriteLine("Selected number:");
             Console.WriteLine();
         }
-        private static void GeneratingMessages()
+        private static void GeneratingMessages(string title)
         {
             Console.WriteLine();
-            Console.WriteLine("Generating report ...");
+            Console.WriteLine($"Generating {title} ...");
             Console.WriteLine();
         }
         private static void DoneMessages(string fileName)
@@ -125,18 +124,18 @@ namespace DbUtilityConsole
 
         private static Dictionary<int, string> ReportInfo => new Dictionary<int, string>()
         {
-            { (int)QueryTypeEnum.ProceduresOptimization, "Procedures Optimization" },
-            { (int)QueryTypeEnum.IndexesDublicatesOptimization, "Indexes Dublicates Optimization" },
-            { (int)QueryTypeEnum.IndexesUnusedOptimization, "Indexes Unused Optimization" },
-            { (int)QueryTypeEnum.ExpensiveQueriesOptimization, "Expensive Queries Optimization" },
-            { (int)QueryTypeEnum.IndexesUsageProceduresStatistic, "Indexes Usage Procedures Statistic" },
-            { (int)QueryTypeEnum.IndexesUsageStatistic, "Indexes Usage Statistic" }
+            { (int)QueryTypeEnum.ProceduresOptimization, "Optimization of procedures" },
+            { (int)QueryTypeEnum.IndexesDublicateOptimization, "Duplicate Index Optimization" },
+            { (int)QueryTypeEnum.IndexesUnusedOptimization, "Optimizing Unused Indexes" },
+            { (int)QueryTypeEnum.ExpensiveQueriesOptimization, "Optimizing Expensive Queries" },
+            { (int)QueryTypeEnum.IndexesUsageProceduresStatistic, "Index Usage Statistics in Procedures" },
+            { (int)QueryTypeEnum.IndexesUsageStatistic, "Indexes Usage Statistics" }
         };
 
         public enum QueryTypeEnum
         {
             ProceduresOptimization = 1,
-            IndexesDublicatesOptimization,
+            IndexesDublicateOptimization,
             IndexesUnusedOptimization,
             ExpensiveQueriesOptimization,
             IndexesUsageProceduresStatistic,
