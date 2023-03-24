@@ -88,6 +88,30 @@ namespace DbUtility.Core.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SELECT
+        ///&apos;[&apos; + SchemaInfo.name + &apos;].[&apos; + TableInfo.name + &apos;]&apos; TableName,
+        ///&apos;[&apos; + SchemaInfo.name + &apos;].[&apos; + IndexInfo.name + &apos;]&apos; IndexName,
+        ///Info.[IndexSize],
+        ///[StatisticLastUpdated],
+        ///[AvgFragmentationInPercent]
+        ///FROM
+        ///(
+        ///SELECT [ObjectId]
+        ///    ,[ObjectName]
+        ///    ,[IndexDescription]
+        ///    ,CONVERT(DECIMAL(16, 1), (SUM([avg_record_size_in_bytes] * [record_count]) / (1024.0 * 1024))) AS [IndexSize]--MB
+        ///    ,[lastupdated] AS [StatisticLastUpdated]
+        ///    ,[AvgFragmentationInPercent]
+        ///FROM (
+        ///    SELECT DISTINCT DB [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GetIndexInfoQuery {
+            get {
+                return ResourceManager.GetString("GetIndexInfoQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SELECT &apos;[&apos; + ROUTINE_SCHEMA + &apos;].[&apos; + ROUTINE_NAME + &apos;]&apos; [ProcedureName]
         ///                                                            FROM INFORMATION_SCHEMA.ROUTINES
         ///                                                            WHERE ROUTINE_TYPE = &apos;PROCEDURE&apos;.

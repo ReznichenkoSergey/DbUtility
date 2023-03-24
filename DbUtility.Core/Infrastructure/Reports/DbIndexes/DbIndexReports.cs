@@ -140,6 +140,7 @@ namespace DbAnalyzer.Core.Infrastructure.Reports.DbIndexes
                 var items = await _indexExplorer.GetDublicateIndexesAsync();
                 if (items != null && items.Any())
                 {
+                    var indexInfo = await _indexExplorer.GetIndexesInfoAsync();
                     DbIndex temp = null;
                     var dbScriptGenerator = new DbScriptGenerator();
                     items
@@ -155,7 +156,7 @@ namespace DbAnalyzer.Core.Infrastructure.Reports.DbIndexes
                                 {
                                     ReportItemStatus = ReportItemStatus.Warning,
                                     Query = dbScriptGenerator.GetDropIndexScript(x),
-                                    Annotation = $"A copy of {temp.IndexName} index"
+                                    Annotation = $"{GetSizeInfo(x.IndexName, indexInfo)}A copy of {temp.IndexName} index"
                                 });
                             }
                             temp = x;
@@ -168,6 +169,18 @@ namespace DbAnalyzer.Core.Infrastructure.Reports.DbIndexes
                 _logger.LogError($"GetReportAsync (DublicateIndexes), Error= {ex.Message}");
                 return null;
             }
+        }
+
+        private string GetSizeInfo(string indexName, IEnumerable<DbIndexInfo> indexInfo)
+        {
+            if(indexInfo == null)
+                return string.Empty;
+
+            var item = indexInfo.FirstOrDefault(y => y.IndexName.Equals(indexName));
+            if (item == null)
+                return string.Empty;
+
+            return $"Size(Mb)= {item.IndexSize}, ";
         }
     }
 }

@@ -198,6 +198,44 @@
                                                         WHERE t.dbid = DB_ID()
                                                         ORDER BY {1}</value>
   </data>
+  <data name="GetIndexInfoQuery" xml:space="preserve">
+    <value>SELECT
+'[' + SchemaInfo.name + '].[' + TableInfo.name + ']' TableName,
+'[' + SchemaInfo.name + '].[' + IndexInfo.name + ']' IndexName,
+Info.[IndexSize],
+[StatisticLastUpdated],
+[AvgFragmentationInPercent]
+FROM
+(
+SELECT [ObjectId]
+    ,[ObjectName]
+    ,[IndexDescription]
+    ,CONVERT(DECIMAL(16, 1), (SUM([avg_record_size_in_bytes] * [record_count]) / (1024.0 * 1024))) AS [IndexSize]--MB
+    ,[lastupdated] AS [StatisticLastUpdated]
+    ,[AvgFragmentationInPercent]
+FROM (
+    SELECT DISTINCT DB_Name(Database_id) AS 'DatabaseName'
+        ,OBJECT_ID AS ObjectId
+        ,Object_Name(Object_id) AS ObjectName
+        ,Index_Type_Desc AS IndexDescription
+        ,avg_record_size_in_bytes
+        ,record_count
+        ,STATS_DATE(object_id, index_id) AS 'lastupdated'
+        ,CONVERT([varchar](512), round(Avg_Fragmentation_In_Percent, 3)) AS 'AvgFragmentationInPercent'
+    FROM sys.dm_db_index_physical_stats(db_id(), NULL, NULL, NULL, 'detailed')
+	WHERE OBJECT_ID IS NOT NULL
+        AND Avg_Fragmentation_In_Percent &lt;&gt; 0
+    ) T
+GROUP BY DatabaseName
+    ,ObjectId
+    ,ObjectName
+    ,IndexDescription
+    ,lastupdated
+    ,AvgFragmentationInPercent) Info
+INNER JOIN sys.indexes IndexInfo ON  Info.[ObjectId] = IndexInfo.[object_id]
+INNER JOIN sys.tables TableInfo ON TableInfo.[object_id] = IndexInfo.[object_id]
+INNER JOIN sys.schemas SchemaInfo ON SchemaInfo.schema_id = TableInfo.schema_id</value>
+  </data>
   <data name="GetProcedureNamesQuery" xml:space="preserve">
     <value>SELECT '[' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + ']' [ProcedureName]
                                                             FROM INFORMATION_SCHEMA.ROUTINES

@@ -8,5 +8,6 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbIndexes.Interfaces
     {
         Task<IEnumerable<UnusedIndexStatistic>> GetUnusedIndexesAsync();
         Task<IEnumerable<DbIndex>> GetDublicateIndexesAsync();
+        Task<IEnumerable<DbIndexInfo>> GetIndexesInfoAsync();
     }
 }

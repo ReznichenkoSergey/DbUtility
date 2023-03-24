@@ -53,5 +53,22 @@ namespace DbAnalyzer.Core.Infrastructure.DbExplorers.DbIndexes
                 return new List<DbIndex>();
             }
         }
+
+        /// <summary>
+        /// Get index dublicates 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<DbIndexInfo>> GetIndexesInfoAsync()
+        {
+            try
+            {
+                return await _con.QueryAsync<DbIndexInfo>(Resources.GetIndexInfoQuery);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"IndexExplorer; GetIndexesInfoAsync, Error= {ex.Message}");
+                return new List<DbIndexInfo>();
+            }
+        }
     }
 }
